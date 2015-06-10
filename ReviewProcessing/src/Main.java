@@ -16,7 +16,7 @@ public class Main {
       reviewIds = ReviewDao.GetReviewIDs();
     } catch (Exception e) {
     }
-    List<List<Integer>> reviewIdSubsets = SplitReviews(reviewIds, 20);
+      ArrayList<ArrayList<Integer>> reviewIdSubsets = SplitReviews(reviewIds, 20);
 
     for(List<Integer> reviewIdSubset : reviewIdSubsets) {
       lemmaExecutor.execute(new LemmaWorker(reviewIdSubset));
@@ -27,14 +27,16 @@ public class Main {
     } catch (Exception e) {}
   }
 
-  private static List<List<Integer>> SplitReviews(List<Integer> reviews, int
+  private static ArrayList<ArrayList<Integer>> SplitReviews(List<Integer>
+                                                                   reviews, int
           length) {
-    List<List<Integer>> returnList = new ArrayList<>();
-    List<Integer> subset = new ArrayList<>();
+    ArrayList<ArrayList<Integer>> returnList = new
+            ArrayList<ArrayList<Integer>>();
+    ArrayList<Integer> subset = new ArrayList<Integer>();
     for (int i = 0; i < reviews.size(); i++) {
       if (i != 0 && i % length == 0) {
         returnList.add(subset);
-        subset = new ArrayList<>();
+        subset = new ArrayList<Integer>();
       }
       subset.add(reviews.get(i));
     }
