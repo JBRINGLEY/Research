@@ -3,7 +3,6 @@ package Data;
 import DataContract.IMovie;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -129,57 +128,4 @@ public class MovieTest {
         assertTrue(movie.GetTitle().equals("test"));
     }
 
-    /*
-        Test Scenarios:
-            - Same collection reference
-            - Different collection reference same key/value pairs
-            - Different collection reference different key/value pairs
-     */
-
-    @Test
-    public void testSameReference() {
-        Map<String, Integer> refOne = new HashMap<String, Integer>() {{
-            put("1", 1);
-            put("2", 2);
-            put("3", 3);
-        }};
-
-        Map<String, Integer> refTwo = refOne;
-
-        assertEquals(refOne, refTwo);
-    }
-
-    @Test
-    public void testDifferentReferenceSameValues() {
-        Map<String, Integer> refOne = new HashMap<String, Integer>() {{
-            put("1", 1);
-            put("2", 2);
-            put("3", 3);
-        }};
-
-        Map<String, Integer> refTwo = new HashMap<String, Integer>() {{
-            put("1", 1);
-            put("2", 2);
-            put("3", 3);
-        }};
-
-        assertEquals(refOne, refTwo);
-    }
-
-    @Test
-    public void testDifferentReferenceDifferentValues() {
-        Map<String, Integer> refOne = new HashMap<String, Integer>() {{
-            put("1", 1);
-            put("2", 2);
-            put("3", 3);
-        }};
-
-        Map<String, Integer> refTwo = new HashMap<String, Integer>() {{
-            put("1", 1);
-            put("2", 2);
-            put("4", 3);
-        }};
-
-        assertEquals(refOne, refTwo);
-    }
 }
