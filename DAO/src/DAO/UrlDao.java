@@ -35,6 +35,7 @@ public class UrlDao {
                 ConnectionHelper.ConnectionString,
                 ConnectionHelper.Username,
                 ConnectionHelper.Password);
+        connection.setAutoCommit(false);
         PreparedStatement sqlStatement = connection.prepareStatement
                 (sqlString);
         sqlStatement.setString(1, url.GetUrl());
@@ -55,6 +56,7 @@ public class UrlDao {
                 ConnectionHelper.ConnectionString,
                 ConnectionHelper.Username,
                 ConnectionHelper.Password);
+        connection.setAutoCommit(false);
         PreparedStatement sqlStatement = connection.prepareStatement
                 (sqlString);
         sqlStatement.execute();
@@ -69,6 +71,7 @@ public class UrlDao {
                 ConnectionHelper.ConnectionString,
                 ConnectionHelper.Username,
                 ConnectionHelper.Password);
+        connection.setAutoCommit(false);
         PreparedStatement sqlStatement = connection.prepareStatement
                 (sqlString);
         ResultSet results =  sqlStatement.executeQuery();

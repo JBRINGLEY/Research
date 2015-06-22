@@ -19,13 +19,14 @@ public class LemmaDao {
                     ConnectionHelper.ConnectionString,
                     ConnectionHelper.Username,
                     ConnectionHelper.Password);
-
+            connection.setAutoCommit(false);
             PreparedStatement insertStatement = connection.prepareStatement
                     (insertSql);
             insertStatement.setInt(1, review.GetReviewId());
             insertStatement.setString(2, review.GetReview());
             insertStatement.setBoolean(3, review.IsTest());
             ResultSet insertResult = insertStatement.executeQuery();
+            connection.commit();
             insertResult.next();
             connection.close();
             return insertResult.getInt(1);

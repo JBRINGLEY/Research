@@ -39,6 +39,7 @@ public class ReviewerDao {
                     ConnectionHelper.ConnectionString,
                     ConnectionHelper.Username,
                     ConnectionHelper.Password);
+            connection.setAutoCommit(false);
             PreparedStatement sqlStatement = connection.prepareStatement
                     (sqlString);
             sqlStatement.setString(1, reviewer.GetName());

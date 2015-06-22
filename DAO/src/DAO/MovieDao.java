@@ -24,7 +24,7 @@ public class MovieDao {
                 DriverManager.getConnection(ConnectionHelper.ConnectionString,
                         ConnectionHelper.Username,
                         ConnectionHelper.Password);
-
+        connection.setAutoCommit(false);
         if (!MovieExists(movie)) {
             PreparedStatement insertStatement = connection.prepareStatement(insertSql);
             insertStatement.setString(1, movie.GetTitle());

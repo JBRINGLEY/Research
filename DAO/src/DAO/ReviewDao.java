@@ -17,6 +17,7 @@ public class ReviewDao {
                 ConnectionHelper.ConnectionString,
                 ConnectionHelper.Username,
                 ConnectionHelper.Password);
+        connection.setAutoCommit(false);
         PreparedStatement sqlStatement = connection.prepareStatement
                 (sqlString);
         sqlStatement.setInt(1, review.GetRating());
