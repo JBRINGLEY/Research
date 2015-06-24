@@ -2,10 +2,7 @@ package DAO.UnitTests;
 
 import DAO.*;
 import Data.DataFactory;
-import DataContract.ILemmatizedReview;
-import DataContract.IMovie;
-import DataContract.IReview;
-import DataContract.IReviewer;
+import DataContract.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -22,11 +19,12 @@ public class LemmaDaoTest {
     public void addLemmatizedReviewTest() {
 
         // region Movie Data Setup
+        IMovieData movieDao = new MovieDao();
         IMovie movie = DataFactory.NewMovie(2000,
                 "TESTMovie" + UUID.randomUUID().toString(), true);
         int movieId = 0;
         try {
-            movieId = MovieDao.AddMovie(movie);
+            movieId = movieDao.AddMovie(movie);
         } catch (Exception e) {
             Assert.fail("Unable to add movie : " + e.getMessage());
         }
@@ -37,11 +35,12 @@ public class LemmaDaoTest {
         // endregion
 
         // region Reviewer Data Setup
+        IReviewerData reviewerDao = new ReviewerDao();
         IReviewer reviewer = DataFactory.NewReviewer("TestReviewer" + UUID
                 .randomUUID().toString(), true);
         int reviewerId = 0;
         try {
-            reviewerId = ReviewerDao.AddReviewer(reviewer);
+            reviewerId = reviewerDao.AddReviewer(reviewer);
         } catch (Exception e) {
             Assert.fail("Unable to add reviewer : " + e.getMessage());
         }
@@ -51,25 +50,27 @@ public class LemmaDaoTest {
         // endregion
 
         //region Review Data Setup
+        IReviewData reviewDao = new ReviewDao();
         IReview review = DataFactory.NewReview(5, movieFromAdd,
                 UUID.randomUUID().toString(), reviewerFromAdd,
                 LocalDate.now(), true);
         int reviewId = 0;
         try {
-            reviewId = ReviewDao.AddReview(review);
+            reviewId = reviewDao.AddReview(review);
         } catch (Exception e) {
             Assert.fail("Unable to add review : " + e.getMessage());
         }
         // endregion
 
         // Lemmatized review test
+        ILemmaData lemmaDao = new LemmaDao();
         ILemmatizedReview lemmaReview = DataFactory.NewLemmatizedReview
                 (reviewId, review.GetReview(), true);
 
         int initialReviewCount = GetLemmatizedReviewCount();
         int lemmaReviewId = 0;
         try {
-            lemmaReviewId = LemmaDao.AddLemmatizedReview(lemmaReview);
+            lemmaReviewId = lemmaDao.AddLemmatizedReview(lemmaReview);
         } catch (Exception e) {
             Assert.fail("Unable to add lemmatized review : " + e.getMessage());
         }

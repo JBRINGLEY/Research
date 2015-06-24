@@ -2,6 +2,7 @@ package DAO;
 
 import Data.DataFactory;
 import DataContract.IReviewer;
+import DataContract.IReviewerData;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,9 +11,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReviewerDao {
+public class ReviewerDao implements IReviewerData {
 
-    public static List<Integer> AddReviewers(List<IReviewer> reviewers)
+    public List<Integer> AddReviewers(List<IReviewer> reviewers)
             throws Exception {
         List<Integer> idsFromAdd = new ArrayList<Integer>();
         for(IReviewer reviewer : reviewers) {
@@ -22,14 +23,14 @@ public class ReviewerDao {
         return idsFromAdd;
     }
 
-    public static void DeleteReviewers(List<IReviewer> reviewers) throws
+    public void DeleteReviewers(List<IReviewer> reviewers) throws
             Exception {
         for(IReviewer reviewer : reviewers) {
             DeleteReviewer(reviewer);
         }
     }
 
-    public static int AddReviewer(IReviewer reviewer) throws Exception {
+    public int AddReviewer(IReviewer reviewer) throws Exception {
         if(!ReviewerExists(reviewer)) {
             String sqlString = "INSERT INTO " +
                     "public.Reviewer(\"username\", \"istest\") " +
@@ -54,7 +55,7 @@ public class ReviewerDao {
         return GetReviewerId(reviewer);
     }
 
-    public static boolean ReviewerExists(IReviewer reviewer) {
+    public boolean ReviewerExists(IReviewer reviewer) {
         try {
             String sqlString = null;
             if (reviewer.GetId() != 0) {
@@ -88,7 +89,7 @@ public class ReviewerDao {
         }
     }
 
-    public static List<IReviewer> GetReviewers() throws Exception {
+    public List<IReviewer> GetReviewers() throws Exception {
         String sqlString = "SELECT * FROM public.Reviewer";
         Class.forName(ConnectionHelper.DriverLocation);
         Connection connection = DriverManager.getConnection(
@@ -109,7 +110,7 @@ public class ReviewerDao {
         return reviewerList;
     }
 
-    public static void DeleteReviewer(IReviewer reviewer) throws Exception{
+    public void DeleteReviewer(IReviewer reviewer) throws Exception{
         if(ReviewerExists(reviewer)){
             String sqlString = "DELETE FROM public.Reviewer t " +
                     "WHERE t.id = " + reviewer.GetId();
@@ -125,7 +126,7 @@ public class ReviewerDao {
         }
     }
 
-    private static int GetReviewerId(IReviewer reviewer) throws Exception {
+    private int GetReviewerId(IReviewer reviewer) throws Exception {
         String sqlString = "SELECT t.id FROM public.Reviewer t " +
                 "WHERE t.username LIKE ?";
         Class.forName(ConnectionHelper.DriverLocation);

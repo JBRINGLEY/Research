@@ -1,5 +1,6 @@
 package DAO;
 
+import DataContract.ILemmaData;
 import DataContract.ILemmatizedReview;
 
 import java.sql.Connection;
@@ -7,9 +8,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class LemmaDao {
+public class LemmaDao implements ILemmaData {
 
-    public static int AddLemmatizedReview(ILemmatizedReview review) {
+    public int AddLemmatizedReview(ILemmatizedReview review) {
         String insertSql = "INSERT INTO public.lemmareview(\"reviewId\", " +
                 "\"review\", \"isTest\") " +
                 "VALUES(?, ?, ?) RETURNING id";

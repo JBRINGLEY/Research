@@ -1,13 +1,15 @@
 package DAO;
 
 import DataContract.IReview;
+import DataContract.IReviewData;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReviewDao {
+public class ReviewDao implements IReviewData {
 
-    public static int AddReview(IReview review)  throws Exception{
+    public int AddReview(IReview review)  throws Exception{
         String sqlString = "INSERT INTO public.Reviews" +
                 "(\"rating\", \"reviewDate\", \"review\", \"reviewerId\", " +
                 "\"istest\", \"movieid\") " +
@@ -34,7 +36,7 @@ public class ReviewDao {
         return sqlResult.getInt(1);
     }
 
-    public static List<Integer> AddReviews(List<IReview> reviews) throws
+    public List<Integer> AddReviews(List<IReview> reviews) throws
             Exception{
         List<Integer> idsFromAdd = new ArrayList<Integer>();
         for(IReview review : reviews) {
@@ -44,7 +46,7 @@ public class ReviewDao {
         return idsFromAdd;
     }
 
-    public static void DeleteReview(IReview review) throws Exception{
+    public void DeleteReview(IReview review) throws Exception{
         if(review.GetId() != 0) {
             String sqlString = "DELETE FROM public.Reviews t " +
                     "WHERE t.id = " + review.GetId();
@@ -61,13 +63,13 @@ public class ReviewDao {
         }
     }
 
-    public static void DeleteReviews(List<IReview> reviews) throws Exception {
+    public void DeleteReviews(List<IReview> reviews) throws Exception {
         for(IReview review : reviews) {
             DeleteReview(review);
         }
     }
 
-  public static List<Integer> GetReviewIDs() throws Exception {
+  public List<Integer> GetReviewIds() throws Exception {
     String sqlQuery = "SELECT r.id FROM public.reviews r " +
             "WHERE r.isTest = false";
     Class.forName(ConnectionHelper.DriverLocation);

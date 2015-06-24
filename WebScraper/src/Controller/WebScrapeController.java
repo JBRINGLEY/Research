@@ -4,13 +4,15 @@ import Contracts.IWebScrapeController;
 import DAO.*;
 import Data.DataFactory;
 import DataContract.IUrl;
+import DataContract.IUrlData;
 
 import java.util.List;
 
 public class WebScrapeController implements IWebScrapeController {
 
     public boolean UrlsToVisitExist() {
-        int urlCount = UrlDao.UrlsToVisitCount();
+        IUrlData urlDao= new UrlDao();
+        int urlCount = urlDao.UrlsToVisitCount();
         if (urlCount > 0) {
             return true;
         }
@@ -18,10 +20,12 @@ public class WebScrapeController implements IWebScrapeController {
     }
 
     public void AddUrlToVisit(String urlToVisit) {
+        IUrlData urlDao= new UrlDao();
+
         try {
             IUrl urlData = DataFactory.NewUrl(urlToVisit, false);
-            if(!UrlDao.UrlVisited(urlData)) {
-                UrlDao.AddUrlToVisit(urlData);
+            if(!urlDao.UrlVisited(urlData)) {
+                urlDao.AddUrlToVisit(urlData);
             }
         } catch (Exception e) {
             System.out.println("Unable to add: " + urlToVisit);
@@ -35,16 +39,19 @@ public class WebScrapeController implements IWebScrapeController {
     }
 
     public String GetUrlToVisit() {
-        return UrlDao.GetUrlToVisit().GetUrl();
+        IUrlData urlDao= new UrlDao();
+        return urlDao.GetUrlToVisit().GetUrl();
     }
 
     public boolean UrlVisited(String url) {
-        return UrlDao.UrlVisited(DataFactory.NewUrl(url, false));
+        IUrlData urlDao= new UrlDao();
+        return urlDao.UrlVisited(DataFactory.NewUrl(url, false));
     }
 
     public void AddVisitedUrl(String url) {
+        IUrlData urlDao= new UrlDao();
         try {
-            UrlDao.AddUrl(DataFactory.NewUrl(url, false));
+            urlDao.AddUrl(DataFactory.NewUrl(url, false));
         } catch (Exception e) {
             System.out.println("Unable to add to visited list: " + url);
         }

@@ -13,7 +13,7 @@ public class Main {
     ExecutorService lemmaExecutor = Executors.newFixedThreadPool(20);
     List<Integer> reviewIds = null;
     try {
-      reviewIds = ReviewDao.GetReviewIDs();
+      reviewIds = ReviewDao.GetReviewIds();
     } catch (Exception e) {
     }
       ArrayList<ArrayList<Integer>> reviewIdSubsets = SplitReviews(reviewIds, 20);

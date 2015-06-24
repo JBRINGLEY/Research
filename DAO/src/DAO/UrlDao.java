@@ -2,6 +2,7 @@ package DAO;
 
 import Data.DataFactory;
 import DataContract.IUrl;
+import DataContract.IUrlData;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,10 +11,10 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UrlDao {
+public class UrlDao implements IUrlData {
 
     // region Visited url data access
-    public static List<Integer> AddUrls(List<IUrl> urls) throws Exception{
+    public List<Integer> AddUrls(List<IUrl> urls) throws Exception{
         List<Integer> idsFromAdd = new ArrayList<Integer>();
         for(IUrl url : urls) {
             idsFromAdd.add(new Integer(AddUrl(url)));
@@ -21,13 +22,13 @@ public class UrlDao {
         return idsFromAdd;
     }
 
-    public static void DeleteUrls(List<IUrl> urls) throws Exception{
+    public void DeleteUrls(List<IUrl> urls) throws Exception{
         for(IUrl url : urls) {
             DeleteUrl(url);
         }
     }
 
-    public static int AddUrl(IUrl url) throws Exception{
+    public int AddUrl(IUrl url) throws Exception{
         String sqlString = "INSERT INTO public.\"dbo.VisitedUrl\"(\"url\", " +
                 "\"istest\") VALUES(?, ?) RETURNING *";
         Class.forName(ConnectionHelper.DriverLocation);
@@ -48,7 +49,7 @@ public class UrlDao {
         return sqlResult.getInt(1);
     }
 
-    public static void DeleteUrl(IUrl url) throws Exception{
+    public void DeleteUrl(IUrl url) throws Exception{
         String sqlString = "DELETE FROM public.\"dbo.VisitedUrl\" " +
                 "WHERE id = " + url.GetId();
         Class.forName(ConnectionHelper.DriverLocation);
@@ -64,7 +65,7 @@ public class UrlDao {
         connection.close();
     }
 
-    public static List<IUrl> GetUrls() throws Exception {
+    public List<IUrl> GetUrls() throws Exception {
         String sqlString = "SELECT * FROM public.\"dbo.VisitedUrl\"";
         Class.forName(ConnectionHelper.DriverLocation);
         Connection connection = DriverManager.getConnection(
@@ -86,7 +87,7 @@ public class UrlDao {
         return urlList;
     }
 
-    public static boolean UrlVisited(IUrl url) {
+    public boolean UrlVisited(IUrl url) {
         String sqlString = "SELECT id FROM public.\"dbo.VisitedUrl\" " +
                 "WHERE url LIKE ?";
         try {
@@ -111,7 +112,7 @@ public class UrlDao {
     // endregion
 
     // region Url to visit data access
-    public static int UrlsToVisitCount() {
+    public int UrlsToVisitCount() {
         String sqlString = "SELECT COUNT(t.id) AS count " +
                 " FROM public.\"dbo.UrlsToVisit\" t";
         try {
@@ -133,7 +134,7 @@ public class UrlDao {
         return -1;
     }
 
-    public static void AddUrlToVisit(IUrl url) {
+    public void AddUrlToVisit(IUrl url) {
         String sqlString = "INSERT INTO public.\"dbo.UrlsToVisit\"(\"url\", " +
                 "\"istest\") VALUES(?, ?) RETURNING *";
         try {
@@ -155,7 +156,7 @@ public class UrlDao {
         }
     }
 
-    public static IUrl GetUrlToVisit() {
+    public IUrl GetUrlToVisit() {
         String countString = "SELECT COUNT(*) AS movieUrlCount FROM public.\"dbo.UrlsToVisit\"" +
                 " WHERE url LIKE '%/m/%type=user%'";
         String movieString = "SELECT * FROM public.\"dbo.UrlsToVisit\" WHERE " +
@@ -197,7 +198,7 @@ public class UrlDao {
         return null;
     }
 
-    private static void DeleteUrlToVisit(IUrl url) {
+    private void DeleteUrlToVisit(IUrl url) {
 
         String sqlString = "DELETE FROM public.\"dbo.UrlsToVisit\" t " +
                 "WHERE t.id = " + url.GetId();

@@ -2,6 +2,7 @@ package DAO;
 
 import Data.DataFactory;
 import DataContract.IMovie;
+import DataContract.IMovieData;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,10 +11,10 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieDao {
+public class MovieDao implements IMovieData {
 
     // region Public Methods
-    public static int AddMovie(IMovie movie)
+    public int AddMovie(IMovie movie)
             throws Exception {
 
         String insertSql = "INSERT INTO public.Movies(\"title\", " +
@@ -42,7 +43,7 @@ public class MovieDao {
         return GetMovieId(movie);
     }
 
-    public static IMovie GetMovie(IMovie movie) {
+    public  IMovie GetMovie(IMovie movie) {
         if (MovieExists(movie)) {
             int id = GetMovieId(movie);
             return DataFactory.NewMovie(id, movie.GetYear(), movie.GetTitle(),
@@ -56,7 +57,7 @@ public class MovieDao {
         return null;
     }
 
-    public static boolean MovieExists(IMovie movie) {
+    public boolean MovieExists(IMovie movie) {
         try {
             if (movie.GetId() != 0) {
                 return MovieExistsBy(movie.GetId());
@@ -68,7 +69,7 @@ public class MovieDao {
         }
     }
 
-    public static void DeleteMovie(IMovie movie) throws Exception {
+    public void DeleteMovie(IMovie movie) throws Exception {
         if(MovieExists(movie)) {
             Class.forName(ConnectionHelper.DriverLocation);
             Connection connection =
@@ -93,7 +94,7 @@ public class MovieDao {
         }
     }
 
-    public static List<IMovie> GetMovies() throws Exception {
+    public List<IMovie> GetMovies() throws Exception {
         String sql = "SELECT t.id, t.title, t.year, t.istest FROM public.Movies t";
         Class.forName(ConnectionHelper.DriverLocation);
         Connection connection = DriverManager.getConnection(
@@ -117,7 +118,7 @@ public class MovieDao {
     // endregion
 
     // region Private methods
-    private static boolean MovieExistsBy(int id) throws Exception {
+    private boolean MovieExistsBy(int id) throws Exception {
         String idSql = "SELECT t.id  FROM public.Movies t " +
                 "WHERE t.id = ?";
         try {
@@ -137,7 +138,7 @@ public class MovieDao {
         } catch (Exception ignored) {return false;}
     }
 
-    private static boolean MovieExistsBy(String title,
+    private boolean MovieExistsBy(String title,
                                          int year) throws Exception {
         String sqlString = "SELECT t.id FROM public.Movies t" +
                 " WHERE t.title LIKE ?";
@@ -157,7 +158,7 @@ public class MovieDao {
 
     }
 
-    private static int GetMovieId(IMovie movie) {
+    private int GetMovieId(IMovie movie) {
         try {
             String idSql = "SELECT t.id FROM public.Movies t " +
                     "WHERE t.title LIKE ?";
