@@ -1,4 +1,5 @@
 import DAO.ReviewDao;
+import DataContract.IReviewData;
 import Workers.LemmaWorker;
 
 import java.util.ArrayList;
@@ -12,8 +13,9 @@ public class Main {
 
     ExecutorService lemmaExecutor = Executors.newFixedThreadPool(20);
     List<Integer> reviewIds = null;
+      IReviewData reviewDao = new ReviewDao();
     try {
-      reviewIds = ReviewDao.GetReviewIds();
+      reviewIds = reviewDao.GetReviewIds();
     } catch (Exception e) {
     }
       ArrayList<ArrayList<Integer>> reviewIdSubsets = SplitReviews(reviewIds, 20);

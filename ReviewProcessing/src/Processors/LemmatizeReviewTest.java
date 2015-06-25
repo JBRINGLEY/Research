@@ -37,8 +37,8 @@ public class LemmatizeReviewTest {
         }};
 
         IReview review = GetNewReview(reviewText);
-        LemmatizeReview lemmaProcess = new LemmatizeReview(review, pipeline);
-        AssertLemmas(expectedLemma, lemmaProcess.Process());
+        IProcessor lemmaProcessor = new LemmatizeReview(review, pipeline);
+        AssertLemmas(expectedLemma, lemmaProcessor.Process());
 
 
         reviewText = "There are lots of cows in the roads around Wisconsin";
@@ -55,9 +55,8 @@ public class LemmatizeReviewTest {
             add("Wisconsin");
         }};
         review = GetNewReview(reviewText);
-        lemmaProcess.SetReview(review);
-        AssertLemmas(expectedLemma, lemmaProcess.Process());
-
+        lemmaProcessor.SetReview(review);
+        AssertLemmas(expectedLemma, lemmaProcessor.Process());
     }
 
     private IReview GetNewReview(String text) {
@@ -76,7 +75,7 @@ public class LemmatizeReviewTest {
         for (int i = 0; i < expectedLemmas.size(); i++) {
             assertTrue("Lemmas did not match: " +
                             "Expected: " + expectedLemmas.get(i) +
-                            "Actual: " + actualLemmas.get(i),
+                            " Actual: " + actualLemmas.get(i),
                     expectedLemmas.get(i).equals(actualLemmas.get(i)));
         }
     }
