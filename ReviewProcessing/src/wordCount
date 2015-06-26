@@ -1,0 +1,31 @@
+package WordCount;
+import java.util.*;
+
+public class WordCount {
+
+	private ArrayList<String> test = new ArrayList<String>();
+	private Map<String, Integer> totalCounts = new HashMap<String, Integer>();
+	
+	public WordCount (ArrayList<String> example){
+		test = example;
+	}
+	
+	public Map<String, Integer> countWords(){
+		for(String key:test){
+			if (totalCounts.containsKey(key)){
+				totalCounts.put(key, totalCounts.get(key)+1);
+			}
+			else{ 
+				totalCounts.put(key, 1);
+			}
+		}
+		return totalCounts;
+	}
+	
+	public boolean isEmpty(){
+		if (test.isEmpty())
+			return true;
+		else
+			return false;
+	}
+}
